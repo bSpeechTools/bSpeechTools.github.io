@@ -46,6 +46,18 @@
             background: #00c853;
             font-size: 14px;
         }
+        #customizeMenu {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        #customizeMenu input {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -58,9 +70,22 @@
     <h2>Text Simplification</h2>
     <button onclick="simplifyText()">🔄 Simplify Text</button>
     <p id="simplifiedText">Simplified text will appear here...</p>
-    <button class="customize-btn" onclick="customizeAppearance()">🎨 Customize</button>
+    <button class="customize-btn" onclick="toggleCustomizeMenu()">🎨 Customize</button>
+    <div id="customizeMenu">
+        <label>Background Color: <input type="color" id="bgColor"></label><br>
+        <label>Button Color: <input type="color" id="btnColor"></label><br>
+        <button onclick="applyCustomColors()">Apply</button>
+    </div>
 
     <script>
+        window.onload = function() {
+            let password = prompt("Enter Password:");
+            if (password !== "1738") {
+                alert("Wrong Password!");
+                window.location.reload();
+            }
+        }
+
         let recognizedText = "";
         const simpleWords = {
             "difficult": "hard",
@@ -105,16 +130,18 @@
             document.getElementById("simplifiedText").innerText = simpleText;
         }
 
-        function customizeAppearance() {
-            const colors = [
-                ['#ff6f61', '#de2e51'],
-                ['#00b4db', '#0083b0'],
-                ['#43cea2', '#185a9d'],
-                ['#ff9a9e', '#fad0c4'],
-                ['#f79d00', '#64f38c']
-            ];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.style.background = `linear-gradient(to right, ${randomColor[0]}, ${randomColor[1]})`;
+        function toggleCustomizeMenu() {
+            const menu = document.getElementById("customizeMenu");
+            menu.style.display = menu.style.display === "none" ? "block" : "none";
+        }
+
+        function applyCustomColors() {
+            const bgColor = document.getElementById("bgColor").value;
+            const btnColor = document.getElementById("btnColor").value;
+            document.body.style.background = bgColor;
+            document.querySelectorAll("button").forEach(btn => {
+                btn.style.background = btnColor;
+            });
         }
     </script>
 </body>
